@@ -4,81 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Atividades</title>
-  
-</head>
-<body>
-
-    <div class="container">
-        <h1>Lista de Atividades</h1>
-        
-        <ul class="list">
-            <li>Fazer tarefas do curso de programacao</li>
-            <li>Preparar o almoco</li>
-            <li>Pagar a conta de luz</li>
-        </ul>
-        
-        <input id="novaAtividade" type="text" placeholder="Digite sua Atividade" /> 
-        <button id="adicionar">Adicionar</button>
-    </div>
-    <script>
-      var botaoAdicionar = document.getElementById('adicionar')
-      botaoAdicionar.addEventListener('click',function(){
-        alert('voce clicou');
-      })  
-      var campoTexto =document.getElementById('novaAtividade');
-    </script>
-  <style>
-     
+    <style>
         body {
-            font-family:Arial, Helvetica, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             background-color: #f7f7f7;
             display: flex;
             justify-content: center;
-            align-items: center; 
+            align-items: center;
             padding: 40px;
-            min-height: 100vh; 
-            margin: 0; 
+            min-height: 100vh;
+            margin: 0;
         }
 
-        
         .container {
-            text-align: center; 
-            background-color: #fff; 
+            text-align: center;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 8px; 
-           width: 400px;
-           box-shadow: 0 2px 10px rgba (0,0,0,0.1);
-           width: 400px;
-        
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Correção: sem espaço */
         }
-        
-       
-        .list {
-		    
-            list-style-position: insid; 
-            padding: 03; 
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333; /* Correção: color */
         }
 
         input[type="text"] {
-            
             border-radius: 5px;
-            border: 1px solid;
+            border: 1px solid #ccc;
             text-align: center;
             width: 70%;
             padding: 10px;
             outline: none;
         }
-            
 
-        
-        h1{ 
-            text-align: center;
-            margin-bottom: 20px;
-            colo: #333;
-            
- 
-        }
-        #adicionar{ 
+        #adicionar {
             border-radius: 20px;
             background-color: rgb(21, 121, 8);
             padding: 10px 15px;
@@ -87,16 +49,18 @@
             color: aliceblue;
             cursor: pointer;
         }
+
         #adicionar:hover {
             background-color: #218838;
         }
+
         ul {
             list-style: none;
             padding: 0;
             margin-top: 20px;
-           
         }
-        li{
+
+        li {
             background-color: #f1f1f1;
             margin-bottom: 10px;
             padding: 10px;
@@ -105,14 +69,101 @@
             justify-content: space-between;
             align-items: center;
             transition: 0.2s;
-
         }
 
         li:hover {
             background-color: #e2e2e2;
         }
 
+        /* Estilo para o botão de excluir */
+        .btn-excluir {
+            background-color: #8d8587;
+            color: white;
+            border: none;
+            border-radius: 20%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-excluir:hover {
+            background-color: #e31414;
+        }
     </style>
-   
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lista de Atividades</h1>
+
+        <ul class="list" id="lista">
+            
+        </ul>
+
+        <input id="novaAtividade" type="text" placeholder="Digite sua Atividade" />
+        <button id="adicionar">Adicionar</button>
+    </div>
+
+    <script>
+        // Seleciona os elementos do HTML
+        const campoTexto = document.getElementById('novaAtividade');
+        const botaoAdicionar = document.getElementById('adicionar'); // Correção 1: ID correto do botão
+        const lista = document.getElementById('lista');
+
+        // Função para adicionar uma nova atividade
+        function adicionarAtividade() {
+            const textoDaAtividade = campoTexto.value.trim(); // Pega o texto e remove espaços extras
+
+            // Não adiciona a tarefa se o campo estiver vazio
+            if (textoDaAtividade === '') {
+                return;
+            }
+
+            // Cria o novo item <li>
+            const li = document.createElement('li');
+            
+            // Cria um <span> para o texto, para separá-lo do botão
+            const spanTexto = document.createElement('span');
+            spanTexto.textContent = textoDaAtividade;
+
+            // Cria o botão de excluir
+            const btnExcluir = document.createElement('button');
+            btnExcluir.textContent = 'x'; // Correção 2: textContent
+            btnExcluir.className = 'btn-excluir'; // Adiciona uma classe para o CSS
+
+            // Adiciona o texto e o botão ao item <li>
+            li.appendChild(spanTexto);
+            li.appendChild(btnExcluir);
+
+            // Adiciona o item <li> à lista <ul>
+            lista.appendChild(li); // Correção 3: appendChild
+
+            // Limpa o campo de texto e foca nele para a próxima tarefa
+            campoTexto.value = '';
+            campoTexto.focus();
+        }
+
+        // Adiciona o evento de clique ao botão "Adicionar"
+        botaoAdicionar.addEventListener('click', adicionarAtividade);
+        
+        // Adiciona um evento para a tecla "Enter" no campo de texto
+        campoTexto.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                adicionarAtividade();
+            }
+        });
+
+        // Adiciona um evento de clique na LISTA INTEIRA para lidar com a exclusão
+        lista.addEventListener('click', function(event) {
+            // Verifica se o elemento clicado tem a classe 'btn-excluir'
+            if (event.target.classList.contains('btn-excluir')) { // Correção 4: classList.contains
+                // Se sim, remove o elemento pai do botão (que é o <li>)
+                const itemParaRemover = event.target.parentElement;
+                itemParaRemover.remove();
+            }
+        });
+    </script>
+
 </body>
 </html>
